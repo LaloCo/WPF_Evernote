@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:NotesApp.View"
         xmlns:vm="clr-namespace:NotesApp.ViewModel"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="300" Width="300">
+        Title="LoginWindow" Height="320" Width="300">
 
     <Window.Resources>
         <vm:LoginVM x:Key="login"/>
@@ -16,9 +16,10 @@
         <StackPanel x:Name="loginStackPanel"
                     Margin="20, 0"
                     VerticalAlignment="Center">
+            <Label Content="Username"/>
             <TextBox Text="{Binding User.Username, Mode=TwoWay}"/>
-            <TextBox Text="{Binding User.Password, Mode=TwoWay}"
-                     Margin="0 5 0 0"/>
+            <Label Content="Password"/>
+            <TextBox Text="{Binding User.Password, Mode=TwoWay}"/>
             <Button Margin="0 5 0 0"
                     Command="{Binding LoginCommand}"
                     CommandParameter="{Binding User}"
@@ -33,15 +34,16 @@
                     Visibility="Collapsed"
                     Margin="20, 0"
                     VerticalAlignment="Center">
+            <Label Content="Username"/>
             <TextBox Text="{Binding User.Username, Mode=TwoWay}"/>
-            <TextBox Text="{Binding User.Email, Mode=TwoWay}"
-                     Margin="0 5 0 0"/>
-            <TextBox Text="{Binding User.Name, Mode=TwoWay}"
-                     Margin="0 5 0 0"/>
-            <TextBox Text="{Binding User.Lastname, Mode=TwoWay}"
-                     Margin="0 5 0 0"/>
-            <TextBox Text="{Binding User.Password, Mode=TwoWay}"
-                     Margin="0 5 0 0"/>
+            <Label Content="Email"/>
+            <TextBox Text="{Binding User.Email, Mode=TwoWay}"/>
+            <Label Content="Name"/>
+            <TextBox Text="{Binding User.Name, Mode=TwoWay}"/>
+            <Label Content="Lastname"/>
+            <TextBox Text="{Binding User.Lastname, Mode=TwoWay}"/>
+            <Label Content="Password"/>
+            <TextBox Text="{Binding User.Password, Mode=TwoWay}"/>
             <Button Margin="0 5 0 0"
                     Command="{Binding RegisterCommand}"
                     CommandParameter="{Binding User}"
