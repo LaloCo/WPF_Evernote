@@ -8,7 +8,7 @@
              d:DesignHeight="100" d:DesignWidth="300">
     <Grid>
         <TextBlock x:Name="notebookNameTextBlock"
-                   Text="Notebook name"
+                   Text="{Binding Name}"
                    Foreground="White"
                    Margin="20"
                    FontSize="15"
