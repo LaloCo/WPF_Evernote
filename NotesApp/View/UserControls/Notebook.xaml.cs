@@ -37,7 +37,6 @@ namespace NotesApp.View.UserControls
             if(notebook != null)
             {
                 notebook.DataContext = notebook.DisplayNotebook;
-                //notebook.notebookNameTextBlock.Text = (e.NewValue as Model.Notebook).Name;
             }
         }
 

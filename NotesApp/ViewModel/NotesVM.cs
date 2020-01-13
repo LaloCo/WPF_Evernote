@@ -34,7 +34,8 @@ namespace NotesApp.ViewModel
             set
             {
                 selectedNotebook = value;
-                ReadNotes();
+                if (selectedNotebook != null)
+                    ReadNotes();
             }
         }
 
@@ -57,6 +58,7 @@ namespace NotesApp.ViewModel
         public NewNoteCommand NewNoteCommand { get; set; }
         public BeginEditCommand BeginEditCommand { get; set; }
         public HasEditedCommand HasEditedCommand { get; set; }
+        public DeleteNotebookCommand DeleteNotebookCommand { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler SelectedNoteChanged;
@@ -69,6 +71,7 @@ namespace NotesApp.ViewModel
             NewNoteCommand = new NewNoteCommand(this);
             BeginEditCommand = new BeginEditCommand(this);
             HasEditedCommand = new HasEditedCommand(this);
+            DeleteNotebookCommand = new DeleteNotebookCommand(this);
 
             Notebooks = new ObservableCollection<Notebook>();
             Notes = new ObservableCollection<Note>();
@@ -79,8 +82,7 @@ namespace NotesApp.ViewModel
 
         private void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.BeginInvoke(this, new PropertyChangedEventArgs(propertyName), null, null);
         }
 
         public void CreateNotebook()
@@ -92,6 +94,13 @@ namespace NotesApp.ViewModel
             };
 
             DatabaseHelper.Insert(newNotebook);
+
+            ReadNotebooks();
+        }
+
+        public void DeleteNotebook(Notebook notebook)
+        {
+            DatabaseHelper.Delete(notebook);
 
             ReadNotebooks();
         }
@@ -115,10 +124,11 @@ namespace NotesApp.ViewModel
         {
             using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
             {
+                conn.CreateTable<Notebook>();
                 var notebooks = conn.Table<Notebook>().ToList();
 
                 Notebooks.Clear();
-                foreach(var notebook in notebooks)
+                foreach (var notebook in notebooks)
                 {
                     Notebooks.Add(notebook);
                 }
@@ -129,6 +139,7 @@ namespace NotesApp.ViewModel
         {
             using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
             {
+                conn.CreateTable<Note>();
                 if (SelectedNotebook != null)
                 {
                     var notes = conn.Table<Note>().Where(n => n.NotebookId == SelectedNotebook.Id).ToList();
