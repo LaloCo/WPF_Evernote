@@ -30,7 +30,7 @@ namespace NotesApp.View
         {
             InitializeComponent();
 
-            viewModel = new NotesVM();
+            viewModel = Resources["vm"] as NotesVM;
             container.DataContext = viewModel;
             viewModel.SelectedNoteChanged += ViewModel_SelectedNoteChanged;
 

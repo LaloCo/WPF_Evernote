@@ -82,7 +82,7 @@ namespace NotesApp.ViewModel
 
         private void OnPropertyChanged(string propertyName)
         {
-            PropertyChanged?.BeginInvoke(this, new PropertyChangedEventArgs(propertyName), null, null);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void CreateNotebook()
@@ -101,8 +101,8 @@ namespace NotesApp.ViewModel
         public void DeleteNotebook(Notebook notebook)
         {
             DatabaseHelper.Delete(notebook);
-
-            ReadNotebooks();
+            Notebooks.Remove(notebook);
+            // ReadNotebooks();
         }
 
         public void CreateNote(int notebookId)
