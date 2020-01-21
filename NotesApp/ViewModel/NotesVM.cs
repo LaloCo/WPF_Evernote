@@ -34,6 +34,7 @@ namespace NotesApp.ViewModel
             set
             {
                 selectedNotebook = value;
+                OnPropertyChanged("SelectedNotebook");
                 if (selectedNotebook != null)
                     ReadNotes();
             }
