@@ -8,16 +8,16 @@
              d:DesignHeight="150" d:DesignWidth="300">
     <StackPanel Margin="20">
         <TextBlock x:Name="titleTextBlock"
-                   Text="Note title"
+                   Text="{Binding Title}"
                    FontSize="15"
                    FontWeight="Bold"/>
         <TextBlock x:Name="editedTextBlock"
-                   Text="19 minutes"
+                   Text="{Binding UpdatedTime}"
                    FontSize="12"
                    Margin="0 10 0 0"
                    Foreground="DodgerBlue"/>
         <TextBlock x:Name="contentTextBlock"
-                   Text=" hrasklfjhdaskl jhfdas; hgfda; fd;a fdhal gfhal gfad f; s gf;nds gf;ds gfds nfdlk"
+                   Text="{Binding Title}"
                    FontSize="12"
                    Foreground="DarkGray"
                    TextWrapping="Wrap"/>
