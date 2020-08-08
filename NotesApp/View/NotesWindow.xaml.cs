@@ -97,13 +97,9 @@ namespace NotesApp.View
         {
             bool isButtonEnabled = (sender as ToggleButton).IsChecked ?? false;
             if (isButtonEnabled)
-            {
                 recognizer.RecognizeAsync(RecognizeMode.Multiple);
-            }
             else
-            {
                 recognizer.RecognizeAsyncStop();
-            }
         }
 
         private void contentRichTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -135,7 +131,11 @@ namespace NotesApp.View
             underlineButton.IsChecked = (selecteDecoration != DependencyProperty.UnsetValue) && (selecteDecoration.Equals(TextDecorations.Underline));
 
             fontFamilyComboBox.SelectedItem = contentRichTextBox.Selection.GetPropertyValue(Inline.FontFamilyProperty);
-            fontSizeComboBox.Text = (contentRichTextBox.Selection.GetPropertyValue(Inline.FontSizeProperty)).ToString();
+            string fontSize = contentRichTextBox.Selection.GetPropertyValue(Inline.FontSizeProperty).ToString();
+            if (fontSize != "{DependencyProperty.UnsetValue}")
+                fontSizeComboBox.Text = fontSize;
+            else
+                fontSizeComboBox.Text = string.Empty;
         }
 
         private void italicButton_Click(object sender, RoutedEventArgs e)
@@ -165,14 +165,13 @@ namespace NotesApp.View
         private void fontFamilyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(fontFamilyComboBox.SelectedItem != null)
-            {
                 contentRichTextBox.Selection.ApplyPropertyValue(Inline.FontFamilyProperty, fontFamilyComboBox.SelectedItem);
-            }
         }
 
         private void fontSizeComboBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            contentRichTextBox.Selection.ApplyPropertyValue(Inline.FontSizeProperty, fontSizeComboBox.Text);
+            if (fontSizeComboBox.Text != string.Empty)
+                contentRichTextBox.Selection.ApplyPropertyValue(Inline.FontSizeProperty, fontSizeComboBox.Text);
         }
 
         private void saveFileButton_Click(object sender, RoutedEventArgs e)
