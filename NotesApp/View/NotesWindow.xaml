@@ -9,7 +9,7 @@
         xmlns:cv="clr-namespace:NotesApp.ViewModel.Converters"
         xmlns:uc="clr-namespace:NotesApp.View.UserControls"
         mc:Ignorable="d"
-        Title="NotesWindow" Height="400" Width="600">
+        Title="NotesWindow" Height="400" Width="700">
 
     <Window.Resources>
         <vm:NotesVM x:Key="vm"/>
@@ -34,10 +34,10 @@
                 <TextBlock x:Name="statusTextBlock"/>
             </StatusBarItem>
         </StatusBar>
-        <ListView Width="140"
+        <ListView Width="160"
                   Background="MidnightBlue"
                   DockPanel.Dock="Left"
-                  SelectedItem="{Binding SelectedNotebook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedNotebook, Mode=TwoWay}"
                   ItemsSource="{Binding Notebooks}">
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -56,13 +56,16 @@
                             <ContextMenu>
                                 <MenuItem Header="Rename"
                                           Command="{Binding Source={StaticResource vm}, Path=BeginEditCommand}"/>
+                                <MenuItem Header="Delete"
+                                          Command="{Binding Source={StaticResource vm}, Path=DeleteNotebookCommand}"
+                                          CommandParameter="{Binding}"/>
                             </ContextMenu>
                         </Grid.ContextMenu>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <ListView Width="140"
+        <ListView Width="160"
                   DockPanel.Dock="Left"
                   SelectedItem="{Binding SelectedNote}"
                   ItemsSource="{Binding Notes}">

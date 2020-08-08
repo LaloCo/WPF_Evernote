@@ -21,8 +21,6 @@ namespace NotesApp.View.UserControls
     /// </summary>
     public partial class NoteControl : UserControl
     {
-
-
         public Note Note
         {
             get { return (Note)GetValue(NoteProperty); }
@@ -39,9 +37,10 @@ namespace NotesApp.View.UserControls
 
             if (note != null)
             {
-                note.titleTextBlock.Text = (e.NewValue as Note).Title;
-                note.editedTextBlock.Text = (e.NewValue as Note).UpdatedTime.ToShortDateString();
-                note.contentTextBlock.Text = (e.NewValue as Note).Title;
+                note.DataContext = note.Note;
+                // note.titleTextBlock.Text = (e.NewValue as Note).Title;
+                // note.editedTextBlock.Text = (e.NewValue as Note).UpdatedTime.ToShortDateString();
+                // note.contentTextBlock.Text = (e.NewValue as Note).Title;
             }
         }
 

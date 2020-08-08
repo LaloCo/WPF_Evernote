@@ -30,7 +30,7 @@ namespace NotesApp.View
         {
             InitializeComponent();
 
-            viewModel = new NotesVM();
+            viewModel = Resources["vm"] as NotesVM;
             container.DataContext = viewModel;
             viewModel.SelectedNoteChanged += ViewModel_SelectedNoteChanged;
 
@@ -57,11 +57,16 @@ namespace NotesApp.View
         private void ViewModel_SelectedNoteChanged(object sender, EventArgs e)
         {
             contentRichTextBox.Document.Blocks.Clear();
-            if(!string.IsNullOrEmpty(viewModel.SelectedNote.FileLocation))
+            if (viewModel.SelectedNote != null)
             {
-                FileStream fileStream = new FileStream(viewModel.SelectedNote.FileLocation, FileMode.Open);
-                TextRange range = new TextRange(contentRichTextBox.Document.ContentStart, contentRichTextBox.Document.ContentEnd);
-                range.Load(fileStream, DataFormats.Rtf);
+                if (!string.IsNullOrEmpty(viewModel.SelectedNote.FileLocation))
+                {
+                    using (FileStream fileStream = new FileStream(viewModel.SelectedNote.FileLocation, FileMode.Open))
+                    {
+                        TextRange range = new TextRange(contentRichTextBox.Document.ContentStart, contentRichTextBox.Document.ContentEnd);
+                        range.Load(fileStream, DataFormats.Rtf);
+                    }
+                }
             }
         }
 
