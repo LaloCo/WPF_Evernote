@@ -31,35 +31,50 @@ namespace NotesApp.ViewModel
             LoginCommand = new LoginCommand(this);
         }
 
-        public void Login()
+        public async void Login()
         {
-            using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
+            //using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
+            //{
+            //    conn.CreateTable<User>();
+
+            //    var user = conn.Table<User>().Where(u => u.Username == User.Username).FirstOrDefault();
+
+            //    if(user.Password == User.Password)
+            //    {
+            //        App.UserId = user.Id.ToString();
+            //        HasLoggedIn(this, new EventArgs());
+            //    }
+            //}
+
+            var user = (await DatabaseHelper.client.GetTable<User>().Where(u => u.Username == User.Username).ToListAsync()).FirstOrDefault();
+            if (user.Password == User.Password)
             {
-                conn.CreateTable<User>();
-
-                var user = conn.Table<User>().Where(u => u.Username == User.Username).FirstOrDefault();
-
-                if(user.Password == User.Password)
-                {
-                    App.UserId = user.Id.ToString();
-                    HasLoggedIn(this, new EventArgs());
-                }
+                App.UserId = user.Id.ToString();
+                HasLoggedIn(this, new EventArgs());
             }
         }
 
-        public void Register()
+        public async void Register()
         {
-            using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
+            //using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
+            //{
+            //    conn.CreateTable<User>();
+
+            //    var result = DatabaseHelper.Insert(User);
+
+            //    if(result)
+            //    {
+            //        App.UserId = User.Id.ToString();
+            //        HasLoggedIn(this, new EventArgs());
+            //    }
+            //}
+
+            var result = await DatabaseHelper.Insert(User);
+
+            if (result)
             {
-                conn.CreateTable<User>();
-
-                var result = DatabaseHelper.Insert(User);
-
-                if(result)
-                {
-                    App.UserId = User.Id.ToString();
-                    HasLoggedIn(this, new EventArgs());
-                }
+                App.UserId = User.Id.ToString();
+                HasLoggedIn(this, new EventArgs());
             }
         }
     }

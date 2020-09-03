@@ -86,27 +86,27 @@ namespace NotesApp.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void CreateNotebook()
+        public async void CreateNotebook()
         {
             Notebook newNotebook = new Notebook()
             {
                 Name = "New notebook",
-                UserId = int.Parse(App.UserId)
+                UserId = App.UserId
             };
 
-            DatabaseHelper.Insert(newNotebook);
+            await DatabaseHelper.Insert(newNotebook);
 
             ReadNotebooks();
         }
 
-        public void DeleteNotebook(Notebook notebook)
+        public async void DeleteNotebook(Notebook notebook)
         {
-            DatabaseHelper.Delete(notebook);
+            await DatabaseHelper.Delete(notebook);
             Notebooks.Remove(notebook);
             // ReadNotebooks();
         }
 
-        public void CreateNote(int notebookId)
+        public async void CreateNote(string notebookId)
         {
             Note newNote = new Note()
             {
@@ -116,41 +116,55 @@ namespace NotesApp.ViewModel
                 Title = "New note"
             };
 
-            DatabaseHelper.Insert(newNote);
+            await DatabaseHelper.Insert(newNote);
 
             ReadNotes();
         }
 
-        public void ReadNotebooks()
+        public async void ReadNotebooks()
         {
-            using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
-            {
-                conn.CreateTable<Notebook>();
-                var notebooks = conn.Table<Notebook>().ToList();
+            //using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
+            //{
+            //    conn.CreateTable<Notebook>();
+            //    var notebooks = conn.Table<Notebook>().ToList();
 
-                Notebooks.Clear();
-                foreach (var notebook in notebooks)
-                {
-                    Notebooks.Add(notebook);
-                }
+            //    Notebooks.Clear();
+            //    foreach (var notebook in notebooks)
+            //    {
+            //        Notebooks.Add(notebook);
+            //    }
+            //}
+
+            var notebooks = await DatabaseHelper.Read<Notebook>();
+            Notebooks.Clear();
+            foreach (var notebook in notebooks)
+            {
+                Notebooks.Add(notebook);
             }
         }
 
-        public void ReadNotes()
+        public async void ReadNotes()
         {
-            using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
-            {
-                conn.CreateTable<Note>();
-                if (SelectedNotebook != null)
-                {
-                    var notes = conn.Table<Note>().Where(n => n.NotebookId == SelectedNotebook.Id).ToList();
+            //using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
+            //{
+            //    conn.CreateTable<Note>();
+            //    if (SelectedNotebook != null)
+            //    {
+            //        var notes = conn.Table<Note>().Where(n => n.NotebookId == SelectedNotebook.Id).ToList();
 
-                    Notes.Clear();
-                    foreach(var note in notes)
-                    {
-                        Notes.Add(note);
-                    }
-                }
+            //        Notes.Clear();
+            //        foreach(var note in notes)
+            //        {
+            //            Notes.Add(note);
+            //        }
+            //    }
+            //}
+
+            var notes = await DatabaseHelper.Read<Note>();
+            Notes.Clear();
+            foreach (var note in notes)
+            {
+                Notes.Add(note);
             }
         }
 
@@ -159,19 +173,19 @@ namespace NotesApp.ViewModel
             IsEditing = true;
         }
 
-        public void HasRenamed(Notebook notebook)
+        public async void HasRenamed(Notebook notebook)
         {
             if(notebook != null)
             {
-                DatabaseHelper.Update(notebook);
+                await DatabaseHelper.Update(notebook);
                 IsEditing = false;
                 ReadNotebooks();
             }
         }
 
-        public void UpdateSelectedNote()
+        public async void UpdateSelectedNote()
         {
-            DatabaseHelper.Update(SelectedNote);
+            await DatabaseHelper.Update(SelectedNote);
         }
     }
 }
