@@ -179,9 +179,11 @@ namespace NotesApp.View
             string rtfFile = System.IO.Path.Combine(Environment.CurrentDirectory, $"{viewModel.SelectedNote.Id}.rtf");
             viewModel.SelectedNote.FileLocation = rtfFile;
 
-            FileStream fileStream = new FileStream(rtfFile, FileMode.Create);
-            TextRange range = new TextRange(contentRichTextBox.Document.ContentStart, contentRichTextBox.Document.ContentEnd);
-            range.Save(fileStream, DataFormats.Rtf);
+            using (FileStream fileStream = new FileStream(rtfFile, FileMode.Create))
+            {
+                TextRange range = new TextRange(contentRichTextBox.Document.ContentStart, contentRichTextBox.Document.ContentEnd);
+                range.Save(fileStream, DataFormats.Rtf);
+            }
 
             viewModel.UpdateSelectedNote();
         }
